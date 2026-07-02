@@ -1,13 +1,2028 @@
 <!DOCTYPE html>
-<html>
-  <head>
-        <title>Silvastore</title>
-  </head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lloyd's Silva Store | Historic Ewa Beach Grocery Since the Plantation Era</title>
+  <meta name="description" content="Lloyd's Silva Store (Silva's Grocery & Liquor) at 91-455 Ewa Beach Road. A historic neighborhood grocery serving Ewa Beach families across generations. Groceries, liquor, meat, ATM, lottery, local products.">
+  <meta name="keywords" content="Lloyd's Silva Store, Silva Store Ewa Beach, Historic Hawaii grocery store, Ewa Beach convenience store, Local grocery Ewa Beach, Plantation history Ewa Beach, Historic businesses Hawaii, Vendor market Ewa Beach, Neighborhood grocery Oahu, Family owned grocery Hawaii">
+  <meta property="og:title" content="Lloyd's Silva Store | Serving Ewa Beach Across Generations">
+  <meta property="og:description" content="More than a neighborhood store. A part of Hawaii's history. Groceries, liquor, meat, local products, and community marketplace in historic Ewa Beach.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://tobuku.github.io/silvastore/">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+
+  <style>
+    :root {
+      --green-dark: #004f3a;
+      --green-primary: #00674b;
+      --green-medium: #1a7a5a;
+      --green-light: #2d8f6f;
+      --green-pale: #e8f5e9;
+      --green-mist: #f0f7f4;
+      --white: #ffffff;
+      --off-white: #f7f5f0;
+      --cream: #faf9f6;
+      --text-dark: #1a1a1a;
+      --text-medium: #4a4a4a;
+      --text-light: #6b6b6b;
+      --gold-accent: #c49a3c;
+      --sunset: #e8854a;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+      --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+      --shadow-xl: 0 20px 60px rgba(0,0,0,0.15);
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-script: 'Dancing Script', cursive;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text-dark);
+      background: var(--white);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Preloader ── */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: var(--green-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s ease;
+    }
+    #preloader.fade-out { opacity: 0; pointer-events: none; }
+    #preloader .loader-text {
+      font-family: var(--font-heading);
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      color: var(--white);
+      letter-spacing: 0.08em;
+      opacity: 0;
+      animation: loaderFade 1s ease 0.2s forwards;
+    }
+    #preloader .loader-sub {
+      font-family: var(--font-script);
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: rgba(255,255,255,0.7);
+      margin-top: 0.5rem;
+      opacity: 0;
+      animation: loaderFade 1s ease 0.6s forwards;
+    }
+    #preloader .loader-bar {
+      width: 120px;
+      height: 2px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      margin-top: 2rem;
+      overflow: hidden;
+    }
+    #preloader .loader-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: var(--white);
+      animation: loaderBar 1.8s ease forwards;
+    }
+    @keyframes loaderFade { to { opacity: 1; } }
+    @keyframes loaderBar { to { width: 100%; } }
+    /* Safety: auto-hide preloader after 4s */
+    @keyframes killPreloader { 0%,99% { opacity: 1; } 100% { opacity: 0; pointer-events: none; } }
+    #preloader { animation: killPreloader 4s ease forwards; }
+
+    /* ── Navigation ── */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9000;
+      padding: 0 clamp(1.5rem, 4vw, 3rem);
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+    }
+    .nav.scrolled {
+      background: rgba(255,255,255,0.97);
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(10px);
+    }
+    .nav-logo {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.4s;
+      line-height: 1.2;
+    }
+    .nav-logo span { display: block; font-size: 0.65em; font-weight: 400; opacity: 0.8; }
+    .nav.scrolled .nav-logo { color: var(--green-dark); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--green-light);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover::after { width: 100%; }
+    .nav.scrolled .nav-links a { color: var(--text-dark); }
+    .nav.scrolled .nav-links a:hover { color: var(--green-primary); }
+
+    .nav-cta {
+      background: var(--white) !important;
+      color: var(--green-dark) !important;
+      padding: 0.5rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 600 !important;
+      transition: background 0.3s, transform 0.2s !important;
+    }
+    .nav-cta:hover { transform: translateY(-1px); }
+    .nav.scrolled .nav-cta {
+      background: var(--green-primary) !important;
+      color: var(--white) !important;
+    }
+
+    /* Mobile menu */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      z-index: 9001;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .nav-toggle span {
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      transition: all 0.3s;
+      display: block;
+    }
+    .nav.scrolled .nav-toggle span { background: var(--text-dark); }
+    .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .nav-toggle.active span:nth-child(2) { opacity: 0; }
+    .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    @media (max-width: 900px) {
+      .nav-toggle { display: flex; }
+      .nav-links {
+        position: fixed;
+        inset: 0;
+        background: var(--green-dark);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        transform: translateX(100%);
+        transition: transform 0.4s ease;
+      }
+      .nav-links.open { transform: translateX(0); }
+      .nav-links a { color: var(--white) !important; font-size: 1.2rem; }
+      .nav.scrolled .nav-links a { color: var(--white) !important; }
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: var(--green-dark);
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+    .hero-bg-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        var(--green-dark) 0%,
+        #00563d 30%,
+        #1a7a5a 60%,
+        #2d8f6f 100%
+      );
+    }
+    /* Animated sugar cane / grass pattern */
+    .hero-cane {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      opacity: 0.08;
+      background: repeating-linear-gradient(
+        85deg,
+        transparent,
+        transparent 8px,
+        rgba(255,255,255,0.3) 8px,
+        rgba(255,255,255,0.3) 10px
+      );
+    }
+    /* Floating particles (trade winds) */
+    .hero-particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 1.5rem;
+      max-width: 900px;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 0.4rem 1.2rem;
+      border-radius: 30px;
+      margin-bottom: 2rem;
+    }
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: rgba(255,255,255,0.85);
+    }
+    .hero-sub {
+      font-family: var(--font-script);
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 2.5rem;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--white);
+      color: var(--green-dark);
+    }
+    .btn-primary:hover {
+      background: var(--off-white);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,0.4);
+    }
+    .btn-outline:hover {
+      border-color: var(--white);
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-2px);
+    }
+    .btn-green {
+      background: var(--green-primary);
+      color: var(--white);
+    }
+    .btn-green:hover {
+      background: var(--green-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .hero-scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+      margin: 0.5rem auto 0;
+    }
+
+    /* ── Section base ── */
+    section { padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 5vw, 3rem); }
+    .section-center { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green-primary);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-medium);
+      line-height: 1.7;
+      max-width: 600px;
+    }
+
+    /* ── Heritage strip ── */
+    .heritage-strip {
+      background: var(--green-primary);
+      padding: 3rem 1.5rem;
+      overflow: hidden;
+    }
+    .heritage-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+    .heritage-stat {
+      color: var(--white);
+    }
+    .heritage-stat .num {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      display: block;
+    }
+    .heritage-stat .label {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      margin-top: 0.3rem;
+    }
+
+    /* ── About ── */
+    .about { background: var(--white); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 5rem);
+      align-items: center;
+      margin-top: 3rem;
+    }
+    .about-image-wrap {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: var(--green-pale);
+    }
+    .about-image-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--green-pale), var(--green-mist));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      color: var(--green-medium);
+      font-size: 1.2rem;
+      text-align: center;
+      padding: 2rem;
+    }
+    .about-image-accent {
+      position: absolute;
+      bottom: -12px;
+      right: -12px;
+      width: 120px;
+      height: 120px;
+      border: 3px solid var(--green-primary);
+      border-radius: 12px;
+      z-index: -1;
+    }
+    .about-text h3 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      line-height: 1.2;
+    }
+    .about-text p {
+      color: var(--text-medium);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    .about-text .script-quote {
+      font-family: var(--font-script);
+      font-size: 1.3rem;
+      color: var(--green-primary);
+      margin: 1.5rem 0;
+    }
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Services ── */
+    .services { background: var(--green-mist); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .service-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--green-pale);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.2rem;
+    }
+    .service-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+    .service-card p {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    /* ── Timeline ── */
+    .timeline { background: var(--white); overflow: hidden; }
+    .timeline-track {
+      position: relative;
+      margin-top: 3rem;
+      padding: 2rem 0;
+    }
+    .timeline-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--green-pale);
+      transform: translateY(-50%);
+    }
+    .timeline-line-fill {
+      width: 0%;
+      height: 100%;
+      background: var(--green-primary);
+      transition: width 0.1s linear;
+    }
+    .timeline-items {
+      display: flex;
+      gap: 0;
+      position: relative;
+      z-index: 2;
+    }
+    .timeline-item {
+      flex: 0 0 280px;
+      text-align: center;
+      padding: 0 1.5rem;
+    }
+    .timeline-dot {
+      width: 16px;
+      height: 16px;
+      background: var(--white);
+      border: 3px solid var(--green-primary);
+      border-radius: 50%;
+      margin: 0 auto 1.2rem;
+      position: relative;
+      transition: all 0.3s;
+    }
+    .timeline-item.active .timeline-dot {
+      background: var(--green-primary);
+      box-shadow: 0 0 0 6px rgba(0,103,75,0.15);
+    }
+    .timeline-era {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--green-primary);
+      margin-bottom: 0.5rem;
+    }
+    .timeline-item h3 {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .timeline-item p {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+    .timeline-scroll-hint {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+    .timeline-scroll-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--green-light) var(--green-pale);
+      padding-bottom: 1rem;
+    }
+    .timeline-scroll-wrap::-webkit-scrollbar { height: 6px; }
+    .timeline-scroll-wrap::-webkit-scrollbar-track { background: var(--green-pale); border-radius: 3px; }
+    .timeline-scroll-wrap::-webkit-scrollbar-thumb { background: var(--green-light); border-radius: 3px; }
+
+    /* ── Products ── */
+    .products { background: var(--green-mist); }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.2rem;
+      margin-top: 3rem;
+    }
+    .product-card {
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s;
+      border: 1px solid rgba(0,0,0,0.04);
+      cursor: pointer;
+    }
+    .product-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+    .product-thumb {
+      aspect-ratio: 1;
+      background: var(--green-pale);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+    .product-info {
+      padding: 1rem;
+    }
+    .product-info h4 {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .product-info p {
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+
+    /* ── Community Stories ── */
+    .stories { background: var(--white); }
+    .stories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .story-card {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 2rem;
+      position: relative;
+      transition: all 0.3s;
+    }
+    .story-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .story-card .quote-mark {
+      font-family: var(--font-heading);
+      font-size: 4rem;
+      color: var(--green-pale);
+      line-height: 1;
+      position: absolute;
+      top: 0.8rem;
+      left: 1.2rem;
+    }
+    .story-card blockquote {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    .story-card .story-author {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+    .story-card .story-year {
+      font-size: 0.75rem;
+      color: var(--green-primary);
+      font-weight: 600;
+    }
+
+    /* ── Digital Museum ── */
+    .museum { background: var(--green-dark); color: var(--white); overflow: hidden; }
+    .museum .section-label { color: rgba(255,255,255,0.5); }
+    .museum .section-title { color: var(--white); }
+    .museum .section-desc { color: rgba(255,255,255,0.7); }
+    .museum-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .museum-item {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.4s;
+      cursor: pointer;
+    }
+    .museum-item:hover {
+      background: rgba(255,255,255,0.12);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .museum-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      display: block;
+      filter: grayscale(0.3);
+      transition: filter 0.3s;
+    }
+    .museum-item:hover .museum-icon { filter: grayscale(0); }
+    .museum-item h4 {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .museum-item p {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+
+    /* ── Recipes ── */
+    .recipes { background: var(--white); }
+    .recipes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .recipe-card {
+      background: var(--cream);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .recipe-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .recipe-thumb {
+      aspect-ratio: 16/10;
+      background: var(--green-pale);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+    .recipe-info {
+      padding: 1.2rem;
+    }
+    .recipe-info h4 {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .recipe-info p {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+    .recipe-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--green-primary);
+      background: var(--green-pale);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-top: 0.6rem;
+    }
+
+    /* ── Vendors ── */
+    .vendors { background: var(--green-mist); }
+    .vendors-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin-top: 3rem;
+    }
+    .vendors-text p {
+      color: var(--text-medium);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    .vendors-features {
+      list-style: none;
+      margin-top: 1.5rem;
+    }
+    .vendors-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      color: var(--text-medium);
+    }
+    .vendors-features li .check {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      background: var(--green-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.7rem;
+      margin-top: 2px;
+    }
+    .vendor-cta-box {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 2.5rem;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+    }
+    .vendor-cta-box h3 {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .vendor-cta-box p {
+      font-size: 0.95rem;
+      color: var(--text-medium);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    @media (max-width: 768px) {
+      .vendors-intro { grid-template-columns: 1fr; }
+    }
+
+    /* ── Events ── */
+    .events { background: var(--white); }
+    .events-list {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .event-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      transition: all 0.3s;
+    }
+    .event-row:hover {
+      transform: translateX(4px);
+      box-shadow: var(--shadow-sm);
+    }
+    .event-date {
+      flex-shrink: 0;
+      text-align: center;
+      width: 60px;
+    }
+    .event-date .month {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--green-primary);
+    }
+    .event-date .day {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1;
+    }
+    .event-details h4 {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .event-details p {
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+    .event-badge {
+      margin-left: auto;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      background: var(--green-pale);
+      color: var(--green-primary);
+      white-space: nowrap;
+    }
+
+    /* ── Community Wall ── */
+    .community-wall { background: var(--green-mist); }
+    .wall-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    .wall-card {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 1.5rem;
+      border-left: 4px solid var(--green-primary);
+      transition: all 0.3s;
+    }
+    .wall-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+    .wall-card .wall-type {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--green-primary);
+      margin-bottom: 0.5rem;
+    }
+    .wall-card h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .wall-card p {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    /* ── Contact ── */
+    .contact { background: var(--white); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+    .contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+    .contact-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .contact-icon {
+      flex-shrink: 0;
+      width: 42px;
+      height: 42px;
+      background: var(--green-pale);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+    .contact-item h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    .contact-item p {
+      font-size: 0.88rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+    .contact-map {
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--green-pale);
+      min-height: 300px;
+    }
+    .contact-map iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 300px;
+      border: 0;
+    }
+    @media (max-width: 768px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Footer ── */
+    .footer {
+      background: var(--green-dark);
+      color: var(--white);
+      padding: 4rem clamp(1.5rem, 5vw, 3rem) 2rem;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+    .footer-brand h3 {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+    .footer-brand p {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.7;
+      max-width: 320px;
+    }
+    .footer h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .footer-links {
+      list-style: none;
+    }
+    .footer-links li { margin-bottom: 0.6rem; }
+    .footer-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 3rem auto 0;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-bottom p {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.4);
+    }
+    .footer-bottom a {
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      font-size: 0.8rem;
+    }
+    .footer-bottom a:hover { color: rgba(255,255,255,0.7); }
+    @media (max-width: 768px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Easter egg: chicken crossing ── */
+    .easter-chicken {
+      position: fixed;
+      bottom: 20px;
+      font-size: 2rem;
+      z-index: 100;
+      pointer-events: none;
+      opacity: 0;
+      transform: scaleX(-1);
+    }
+
+    /* ── Easter egg: old delivery truck ── */
+    .easter-truck {
+      position: fixed;
+      bottom: 60px;
+      font-size: 2.5rem;
+      z-index: 100;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Reduced motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+      #preloader { display: none; }
+    }
+
+    /* ── Back to top ── */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 44px;
+      height: 44px;
+      background: var(--green-primary);
+      color: var(--white);
+      border: none;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      z-index: 8000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--green-dark);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
 <body>
-      <h1>Welcome to Silvastore</h1>
-    <p>This is the GitHub Pages site for Silvastore.</p>
+
+<!-- Preloader -->
+<div id="preloader">
+  <div class="loader-text">Lloyd's Silva Store</div>
+  <div class="loader-sub">Ewa Beach, Hawaii</div>
+  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+</div>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo">Lloyd's Silva Store<span>Est. Plantation Era &middot; Ewa Beach</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#timeline">History</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#vendors">Vendors</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#vendors" class="nav-cta">Become a Vendor</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <div class="hero-bg-gradient"></div>
+    <div class="hero-cane"></div>
+    <div class="hero-particles" id="heroParticles"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge reveal">Ewa Beach, Hawaii &middot; Since the Plantation Era</div>
+    <h1 class="reveal">Serving Ewa Beach<br>Across <em>Generations</em></h1>
+    <p class="hero-sub reveal">More than a neighborhood store. A part of Hawaii's history.</p>
+    <div class="hero-buttons reveal">
+      <a href="#contact" class="btn btn-primary">Visit Store</a>
+      <a href="#vendors" class="btn btn-outline">Become a Vendor</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll to explore</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- Heritage Strip -->
+<div class="heritage-strip">
+  <div class="heritage-inner">
+    <div class="heritage-stat reveal">
+      <span class="num" data-count="70">0</span>
+      <span class="label">Years Serving Ewa Beach</span>
+    </div>
+    <div class="heritage-stat reveal">
+      <span class="num">3+</span>
+      <span class="label">Generations of Families</span>
+    </div>
+    <div class="heritage-stat reveal">
+      <span class="num">1</span>
+      <span class="label">Historic Landmark Location</span>
+    </div>
+    <div class="heritage-stat reveal">
+      <span class="num">&infin;</span>
+      <span class="label">Community Memories</span>
+    </div>
+  </div>
+</div>
+
+<!-- About -->
+<section class="about" id="about">
+  <div class="section-center">
+    <div class="section-label reveal">Our Story</div>
+    <div class="section-title reveal">A Landmark on Ewa Beach Road</div>
+    <div class="about-grid">
+      <div class="about-image-wrap reveal">
+        <div class="about-image-placeholder">
+          Historic Silva Store<br>Ewa Beach Road
+        </div>
+        <div class="about-image-accent"></div>
+      </div>
+      <div class="about-text reveal">
+        <h3>From Plantation Days to Today</h3>
+        <p>Silva Store has long been one of the recognizable landmarks on Ewa Beach Road. For decades it served residents long before large shopping centers arrived in Ewa Beach.</p>
+        <p>During the plantation community era, Silva Store stood alongside Beach Corner, Wong's Chevron, and Tanaka Store as one of the few commercial establishments available to local families. It was more than a place to buy groceries &mdash; it was where neighbors gathered, stories were shared, and community bonds were forged.</p>
+        <p class="script-quote">"Where every customer is family and every visit feels like coming home."</p>
+        <p>Today, the location continues operating as Lloyd's Silva Store (Silva's Grocery &amp; Liquor), carrying forward a tradition of service that spans generations. The shelves may have changed, but the spirit of aloha remains the same.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Timeline -->
+<section class="timeline" id="timeline">
+  <div class="section-center">
+    <div class="section-label reveal">Our Heritage</div>
+    <div class="section-title reveal">A Journey Through Time</div>
+    <p class="section-desc reveal">Follow the story of Silva Store from the sugar plantation days to the thriving community marketplace it is today.</p>
+    <div class="timeline-track">
+      <div class="timeline-scroll-wrap" id="timelineScroll">
+        <div class="timeline-line"><div class="timeline-line-fill" id="timelineFill"></div></div>
+        <div class="timeline-items">
+          <div class="timeline-item active">
+            <div class="timeline-dot"></div>
+            <div class="timeline-era">Early 1900s</div>
+            <h3>Plantation Era</h3>
+            <p>Sugar cane fields stretch across Ewa. Plantation workers and their families build a tight-knit community in rural West Oahu.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-era">Mid-Century</div>
+            <h3>Silva Store Opens</h3>
+            <p>Silva Store opens its doors on Ewa Beach Road, becoming a vital resource for local families with limited access to shops.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-era">1960s - 70s</div>
+            <h3>Community Hub</h3>
+            <p>Families gather daily. Kids walk from school to buy shave ice and crack seed. The store becomes the heart of the neighborhood.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-era">1980s - 90s</div>
+            <h3>Ewa Beach Grows</h3>
+            <p>New developments transform the former plantation lands. Shopping centers arrive, but Silva Store endures as a beloved local institution.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-era">2000s</div>
+            <h3>Modern Ewa Beach</h3>
+            <p>The area becomes one of Oahu's fastest-growing communities. Silva Store remains a landmark amidst rapid change.</p>
+          </div>
+          <div class="timeline-item active">
+            <div class="timeline-dot"></div>
+            <div class="timeline-era">Today</div>
+            <h3>Lloyd's Silva Store</h3>
+            <p>Now operating as Lloyd's Silva Store, the legacy continues with groceries, liquor, local products, and a growing vendor marketplace.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="timeline-scroll-hint">Scroll to explore the timeline &rarr;</div>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="services" id="services">
+  <div class="section-center">
+    <div class="section-label reveal">What We Offer</div>
+    <div class="section-title reveal">Your Neighborhood One-Stop</div>
+    <p class="section-desc reveal">Everything you need, right here in the heart of Ewa Beach.</p>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">&#127854;</div>
+        <h3>Fresh Groceries</h3>
+        <p>Daily essentials, produce, and pantry staples for every household.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">&#129385;</div>
+        <h3>Quality Meat</h3>
+        <p>Fresh cuts and local favorites for your family meals and gatherings.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">&#127866;</div>
+        <h3>Beer, Wine &amp; Spirits</h3>
+        <p>Wide selection of domestic, imported, and craft beverages.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">&#127855;</div>
+        <h3>Local Snacks</h3>
+        <p>Crack seed, dried mango, li hing, mochi, and island favorites.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">&#128179;</div>
+        <h3>ATM</h3>
+        <p>Convenient cash access right in the store.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">&#127922;</div>
+        <h3>Lottery</h3>
+        <p>Hawaii lottery tickets available. Try your luck today.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">&#128176;</div>
+        <h3>Bill Pay</h3>
+        <p>Pay your bills in person, quickly and easily.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">&#128241;</div>
+        <h3>Phone Cards</h3>
+        <p>Prepaid phone cards for local and international calling.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Products -->
+<section class="products" id="products">
+  <div class="section-center">
+    <div class="section-label reveal">Shop Local</div>
+    <div class="section-title reveal">Store Categories</div>
+    <p class="section-desc reveal">From everyday essentials to island favorites, we carry what your family needs.</p>
+    <div class="products-grid">
+      <div class="product-card reveal">
+        <div class="product-thumb">&#129361;</div>
+        <div class="product-info"><h4>Groceries</h4><p>Everyday pantry essentials</p></div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-thumb">&#127864;</div>
+        <div class="product-info"><h4>Wine</h4><p>Red, white, ros&eacute; &amp; sparkling</p></div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-thumb">&#127867;</div>
+        <div class="product-info"><h4>Beer</h4><p>Domestic, import &amp; craft</p></div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-thumb">&#129380;</div>
+        <div class="product-info"><h4>Spirits</h4><p>Whiskey, vodka, rum &amp; more</p></div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-thumb">&#129385;</div>
+        <div class="product-info"><h4>Fresh Meat</h4><p>Quality cuts daily</p></div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-thumb">&#127847;</div>
+        <div class="product-info"><h4>Local Snacks</h4><p>Island-style treats</p></div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-thumb">&#129482;</div>
+        <div class="product-info"><h4>Ice</h4><p>Bags of ice always ready</p></div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-thumb">&#128230;</div>
+        <div class="product-info"><h4>Household</h4><p>Cleaning &amp; everyday supplies</p></div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-thumb">&#127876;</div>
+        <div class="product-info"><h4>Seasonal</h4><p>Holiday &amp; seasonal specials</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Community Stories -->
+<section class="stories" id="stories">
+  <div class="section-center">
+    <div class="section-label reveal">Talk Story</div>
+    <div class="section-title reveal">Community Memories</div>
+    <p class="section-desc reveal">Generations of families have made memories at Silva Store. Here are some of their stories.</p>
+    <div class="stories-grid">
+      <div class="story-card reveal">
+        <div class="quote-mark">&ldquo;</div>
+        <blockquote>My grandfather used to buy his fishing supplies here before heading out to the reef. He'd always come back with extra snacks for us kids.</blockquote>
+        <div class="story-author">Kimo T.</div>
+        <div class="story-year">Family memories since the 1960s</div>
+      </div>
+      <div class="story-card reveal">
+        <div class="quote-mark">&ldquo;</div>
+        <blockquote>I remember walking here after school with my friends. We'd pool our quarters together to buy crack seed and saimin. Those were the best days.</blockquote>
+        <div class="story-author">Leilani M.</div>
+        <div class="story-year">Growing up in the 1970s</div>
+      </div>
+      <div class="story-card reveal">
+        <div class="quote-mark">&ldquo;</div>
+        <blockquote>My family has been shopping here since before I was born. Three generations, same store. That's special. You can't find that at the big chains.</blockquote>
+        <div class="story-author">Jason S.</div>
+        <div class="story-year">Lifelong Ewa Beach resident</div>
+      </div>
+      <div class="story-card reveal">
+        <div class="quote-mark">&ldquo;</div>
+        <blockquote>When we first moved to Ewa Beach, Silva Store was where we learned what it means to be part of a community. The owners knew our names by the second visit.</blockquote>
+        <div class="story-author">Maria R.</div>
+        <div class="story-year">Ewa Beach since the 1990s</div>
+      </div>
+      <div class="story-card reveal">
+        <div class="quote-mark">&ldquo;</div>
+        <blockquote>My tutu used to send me to Silva Store with a list written on a napkin. They always made sure I got everything right and sent me home with a piece of candy.</blockquote>
+        <div class="story-author">Noelani K.</div>
+        <div class="story-year">Childhood in the 1980s</div>
+      </div>
+      <div class="story-card reveal">
+        <div class="quote-mark">&ldquo;</div>
+        <blockquote>Every New Year's, we get our fireworks supplies and pupus from Silva Store. It wouldn't be the same without them. This is our neighborhood store.</blockquote>
+        <div class="story-author">Brandon L.</div>
+        <div class="story-year">Ewa Beach family tradition</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Digital Museum -->
+<section class="museum" id="museum">
+  <div class="section-center">
+    <div class="section-label reveal">Digital Museum</div>
+    <div class="section-title reveal">Artifacts &amp; Memories</div>
+    <p class="section-desc reveal">Explore objects and memories from the store's long history. Each item tells a story of Ewa Beach's past.</p>
+    <div class="museum-grid">
+      <div class="museum-item reveal">
+        <span class="museum-icon">&#128176;</span>
+        <h4>Old Cash Register</h4>
+        <p>The mechanical register that rang up countless transactions before the digital age.</p>
+      </div>
+      <div class="museum-item reveal">
+        <span class="museum-icon">&#127870;</span>
+        <h4>Vintage Coke Bottle</h4>
+        <p>Glass bottles from the cooler that every kid reached for on hot Ewa afternoons.</p>
+      </div>
+      <div class="museum-item reveal">
+        <span class="museum-icon">&#128220;</span>
+        <h4>Old Receipts</h4>
+        <p>Handwritten receipts showing prices from a time when a dollar went a long way.</p>
+      </div>
+      <div class="museum-item reveal">
+        <span class="museum-icon">&#127991;</span>
+        <h4>Store Signs</h4>
+        <p>Weathered signs that have guided customers to Ewa Beach Road for decades.</p>
+      </div>
+      <div class="museum-item reveal">
+        <span class="museum-icon">&#128247;</span>
+        <h4>Family Photos</h4>
+        <p>Photographs of the families who built and ran this landmark institution.</p>
+      </div>
+      <div class="museum-item reveal">
+        <span class="museum-icon">&#128231;</span>
+        <h4>Old Advertisements</h4>
+        <p>Vintage ads and flyers from the store's earlier decades.</p>
+      </div>
+      <div class="museum-item reveal">
+        <span class="museum-icon">&#128506;</span>
+        <h4>Historic Maps</h4>
+        <p>Maps showing Ewa Beach before development, when cane fields bordered the road.</p>
+      </div>
+      <div class="museum-item reveal">
+        <span class="museum-icon">&#127925;</span>
+        <h4>Old Neon Signs</h4>
+        <p>The glow of vintage beer signs that lit up the store after sunset.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Local Recipes -->
+<section class="recipes" id="recipes">
+  <div class="section-center">
+    <div class="section-label reveal">Local Grinds</div>
+    <div class="section-title reveal">Recipes From the Neighborhood</div>
+    <p class="section-desc reveal">Classic Hawaii recipes made with ingredients you can pick up right here at the store.</p>
+    <div class="recipes-grid">
+      <div class="recipe-card reveal">
+        <div class="recipe-thumb">&#127833;</div>
+        <div class="recipe-info">
+          <h4>Spam Musubi</h4>
+          <p>Hawaii's favorite grab-and-go snack. Grilled Spam on sushi rice wrapped in nori.</p>
+          <span class="recipe-tag">Island Classic</span>
+        </div>
+      </div>
+      <div class="recipe-card reveal">
+        <div class="recipe-thumb">&#127858;</div>
+        <div class="recipe-info">
+          <h4>Loco Moco</h4>
+          <p>Rice, hamburger patty, fried egg, and brown gravy. Comfort food at its best.</p>
+          <span class="recipe-tag">Comfort Food</span>
+        </div>
+      </div>
+      <div class="recipe-card reveal">
+        <div class="recipe-thumb">&#127843;</div>
+        <div class="recipe-info">
+          <h4>Poke Bowl</h4>
+          <p>Fresh ahi tuna with soy sauce, sesame oil, green onion, and limu.</p>
+          <span class="recipe-tag">Fresh &amp; Local</span>
+        </div>
+      </div>
+      <div class="recipe-card reveal">
+        <div class="recipe-thumb">&#127858;</div>
+        <div class="recipe-info">
+          <h4>Portuguese Bean Soup</h4>
+          <p>A hearty Hawaii staple with Portuguese sausage, beans, cabbage, and potatoes.</p>
+          <span class="recipe-tag">Family Favorite</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Vendors -->
+<section class="vendors" id="vendors">
+  <div class="section-center">
+    <div class="section-label reveal">Marketplace</div>
+    <div class="section-title reveal">Become a Vendor</div>
+    <p class="section-desc reveal">Join our growing community marketplace. Sell your products alongside a historic Ewa Beach landmark.</p>
+    <div class="vendors-intro">
+      <div class="vendors-text reveal">
+        <p>Lloyd's Silva Store is expanding its marketplace to feature local vendors, artisans, and small businesses. Whether you sell homemade goods, local produce, crafts, or prepared food, we want to hear from you.</p>
+        <p>Our vendor program offers affordable booth space, flexible scheduling, and access to a loyal community of Ewa Beach shoppers who love supporting local businesses.</p>
+        <ul class="vendors-features">
+          <li><span class="check">&#10003;</span> Affordable booth spaces with flexible scheduling</li>
+          <li><span class="check">&#10003;</span> Foot traffic from an established neighborhood location</li>
+          <li><span class="check">&#10003;</span> Community events and seasonal market days</li>
+          <li><span class="check">&#10003;</span> Support and promotion through our network</li>
+          <li><span class="check">&#10003;</span> Online vendor profile and featured products</li>
+        </ul>
+      </div>
+      <div class="vendor-cta-box reveal">
+        <h3>Ready to Join?</h3>
+        <p>Submit your vendor application and we'll get back to you within 48 hours. Space is limited for upcoming market events.</p>
+        <a href="mailto:info@silvastore.com?subject=Vendor Application" class="btn btn-green">Apply as a Vendor</a>
+        <p style="margin-top:1rem;font-size:0.8rem;color:var(--text-light);">Questions? Call us at (808) 689-7331</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Events -->
+<section class="events" id="events">
+  <div class="section-center">
+    <div class="section-label reveal">Coming Up</div>
+    <div class="section-title reveal">Community Events</div>
+    <p class="section-desc reveal">Markets, gatherings, and celebrations that bring Ewa Beach together.</p>
+    <div class="events-list">
+      <div class="event-row reveal">
+        <div class="event-date">
+          <div class="month">Jul</div>
+          <div class="day">4</div>
+        </div>
+        <div class="event-details">
+          <h4>Independence Day Community BBQ</h4>
+          <p>Live music, food vendors, keiki activities, and fireworks viewing</p>
+        </div>
+        <div class="event-badge">Open to All</div>
+      </div>
+      <div class="event-row reveal">
+        <div class="event-date">
+          <div class="month">Jul</div>
+          <div class="day">19</div>
+        </div>
+        <div class="event-details">
+          <h4>Saturday Vendor Market</h4>
+          <p>Local crafts, homemade goods, fresh produce, and prepared food</p>
+        </div>
+        <div class="event-badge">Vendors Welcome</div>
+      </div>
+      <div class="event-row reveal">
+        <div class="event-date">
+          <div class="month">Aug</div>
+          <div class="day">9</div>
+        </div>
+        <div class="event-details">
+          <h4>Back to School Drive</h4>
+          <p>School supply donations, backpack giveaway, and family fun</p>
+        </div>
+        <div class="event-badge">Community</div>
+      </div>
+      <div class="event-row reveal">
+        <div class="event-date">
+          <div class="month">Aug</div>
+          <div class="day">23</div>
+        </div>
+        <div class="event-details">
+          <h4>Ewa Beach Heritage Day</h4>
+          <p>Celebrating plantation era history with stories, food, and music</p>
+        </div>
+        <div class="event-badge">Special Event</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Community Wall -->
+<section class="community-wall" id="community">
+  <div class="section-center">
+    <div class="section-label reveal">Bulletin Board</div>
+    <div class="section-title reveal">Community Wall</div>
+    <p class="section-desc reveal">What's happening in Ewa Beach. Your neighborhood bulletin board, now digital.</p>
+    <div class="wall-grid">
+      <div class="wall-card reveal">
+        <div class="wall-type">Little League</div>
+        <h4>Ewa Beach Little League Signups</h4>
+        <p>Registration open for Fall 2026 season. Ages 5-12. Contact Coach Ray for details.</p>
+      </div>
+      <div class="wall-card reveal">
+        <div class="wall-type">Fundraiser</div>
+        <h4>Ilima Intermediate School Car Wash</h4>
+        <p>Saturday, July 12th at Ewa Beach Community Park. Support the marching band.</p>
+      </div>
+      <div class="wall-card reveal">
+        <div class="wall-type">Church</div>
+        <h4>Our Lady of Perpetual Help Annual Festival</h4>
+        <p>Food booths, games, entertainment. August 15-17. Volunteers needed.</p>
+      </div>
+      <div class="wall-card reveal">
+        <div class="wall-type">Congratulations</div>
+        <h4>Class of 2026 Graduates</h4>
+        <p>Congratulations to all Ewa Beach graduates! The community is proud of you.</p>
+      </div>
+      <div class="wall-card reveal">
+        <div class="wall-type">Lost &amp; Found</div>
+        <h4>Found: Set of Keys</h4>
+        <p>Found near the store entrance on Tuesday. Ask at the counter to claim.</p>
+      </div>
+      <div class="wall-card reveal">
+        <div class="wall-type">Birthday</div>
+        <h4>Happy Birthday Aunty Rose!</h4>
+        <p>Wishing Aunty Rose a blessed 80th birthday. From your Ewa Beach ohana.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contact">
+  <div class="section-center">
+    <div class="section-label reveal">Find Us</div>
+    <div class="section-title reveal">Visit Lloyd's Silva Store</div>
+    <p class="section-desc reveal">We're right where we've always been &mdash; on Ewa Beach Road.</p>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="contact-item">
+          <div class="contact-icon">&#128205;</div>
+          <div>
+            <h4>Address</h4>
+            <p>91-455 Ewa Beach Road<br>Ewa Beach, Hawaii 96706</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">&#128222;</div>
+          <div>
+            <h4>Phone</h4>
+            <p>(808) 689-7331</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">&#128336;</div>
+          <div>
+            <h4>Store Hours</h4>
+            <p>Monday &ndash; Saturday: 6:00 AM &ndash; 10:00 PM<br>Sunday: 7:00 AM &ndash; 9:00 PM</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">&#128663;</div>
+          <div>
+            <h4>Parking</h4>
+            <p>Free parking available in front of the store</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">&#9855;</div>
+          <div>
+            <h4>Accessibility</h4>
+            <p>Wheelchair accessible entrance and aisles</p>
+          </div>
+        </div>
+      </div>
+      <div class="contact-map reveal">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3718.5!2d-158.0075!3d21.315!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c006f4e0d3e7b9d%3A0x2a!2s91-455+Ewa+Beach+Rd%2C+Ewa+Beach%2C+HI+96706!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Lloyd's Silva Store location map">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3>Lloyd's Silva Store</h3>
+      <p>A historic Ewa Beach landmark serving families across generations. Groceries, liquor, local products, and community marketplace at 91-455 Ewa Beach Road.</p>
+    </div>
+    <div>
+      <h4>Store</h4>
+      <ul class="footer-links">
+        <li><a href="#about">Our Story</a></li>
+        <li><a href="#timeline">History</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#recipes">Recipes</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Community</h4>
+      <ul class="footer-links">
+        <li><a href="#stories">Stories</a></li>
+        <li><a href="#museum">Museum</a></li>
+        <li><a href="#events">Events</a></li>
+        <li><a href="#community">Bulletin Board</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Vendors</h4>
+      <ul class="footer-links">
+        <li><a href="#vendors">Become a Vendor</a></li>
+        <li><a href="#events">Market Dates</a></li>
+        <li><a href="mailto:info@silvastore.com">Vendor Inquiry</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Lloyd's Silva Store. All rights reserved.</p>
+    <p>91-455 Ewa Beach Road, Ewa Beach, Hawaii 96706</p>
+  </div>
+</footer>
+
+<!-- Back to top -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top">&#8593;</button>
+
+<!-- Easter eggs -->
+<div class="easter-chicken" id="easterChicken">&#128020;</div>
+<div class="easter-truck" id="easterTruck">&#128666;</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ── Register GSAP plugins ──
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+  // ── Preloader ──
+  function killPreloader() {
+    var pre = document.getElementById('preloader');
+    if (pre) {
+      pre.classList.add('fade-out');
+      setTimeout(function() { pre.style.display = 'none'; }, 700);
+    }
+  }
+  window.addEventListener('load', function() {
+    setTimeout(killPreloader, 2200);
+  });
+  // Safety net
+  setTimeout(killPreloader, 4000);
+
+  // ── Mobile nav toggle ──
+  var toggle = document.getElementById('navToggle');
+  var links = document.getElementById('navLinks');
+  toggle.addEventListener('click', function() {
+    toggle.classList.toggle('active');
+    links.classList.toggle('open');
+  });
+  // Close menu on link click
+  links.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      toggle.classList.remove('active');
+      links.classList.remove('open');
+    });
+  });
+
+  // ── Nav scroll state ──
+  var nav = document.getElementById('nav');
+  ScrollTrigger.create({
+    start: 'top -80',
+    end: 99999,
+    onUpdate: function(self) {
+      if (self.direction === 1 && window.scrollY > 80) {
+        nav.classList.add('scrolled');
+      } else if (window.scrollY < 80) {
+        nav.classList.remove('scrolled');
+      }
+    }
+  });
+
+  // ── Hero particles (trade winds) ──
+  var particleContainer = document.getElementById('heroParticles');
+  for (var i = 0; i < 30; i++) {
+    var p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = Math.random() * 100 + '%';
+    p.style.width = (2 + Math.random() * 3) + 'px';
+    p.style.height = p.style.width;
+    particleContainer.appendChild(p);
+
+    gsap.to(p, {
+      x: 100 + Math.random() * 200,
+      y: -50 + Math.random() * 100,
+      opacity: 0,
+      duration: 4 + Math.random() * 6,
+      repeat: -1,
+      delay: Math.random() * 5,
+      ease: 'none'
+    });
+  }
+
+  // ── Hero content reveal ──
+  var heroReveals = document.querySelectorAll('.hero .reveal');
+  gsap.fromTo(heroReveals,
+    { opacity: 0, y: 40 },
+    { opacity: 1, y: 0, duration: 1, stagger: 0.2, delay: 2.4, ease: 'power3.out' }
+  );
+
+  // ── Scroll reveal ──
+  var reveals = document.querySelectorAll('.reveal:not(.hero .reveal)');
+  reveals.forEach(function(el) {
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 85%',
+      once: true,
+      onEnter: function() {
+        gsap.fromTo(el,
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
+        );
+      }
+    });
+  });
+
+  // ── Heritage counter animation ──
+  var counterEl = document.querySelector('[data-count]');
+  if (counterEl) {
+    ScrollTrigger.create({
+      trigger: counterEl,
+      start: 'top 85%',
+      once: true,
+      onEnter: function() {
+        var target = parseInt(counterEl.getAttribute('data-count'));
+        gsap.fromTo(counterEl, { innerText: 0 }, {
+          innerText: target,
+          duration: 2,
+          snap: { innerText: 1 },
+          ease: 'power2.out',
+          onUpdate: function() {
+            counterEl.textContent = Math.round(parseFloat(counterEl.textContent)) + '+';
+          }
+        });
+      }
+    });
+  }
+
+  // ── Timeline scroll progress ──
+  var timelineScroll = document.getElementById('timelineScroll');
+  var timelineFill = document.getElementById('timelineFill');
+  if (timelineScroll && timelineFill) {
+    timelineScroll.addEventListener('scroll', function() {
+      var scrollLeft = timelineScroll.scrollLeft;
+      var maxScroll = timelineScroll.scrollWidth - timelineScroll.clientWidth;
+      var pct = maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0;
+      timelineFill.style.width = pct + '%';
+    });
+  }
+
+  // ── Sugar cane sway ──
+  gsap.to('.hero-cane', {
+    backgroundPositionX: '20px',
+    duration: 3,
+    repeat: -1,
+    yoyo: true,
+    ease: 'sine.inOut'
+  });
+
+  // ── Back to top ──
+  var btt = document.getElementById('backToTop');
+  ScrollTrigger.create({
+    start: 'top -400',
+    end: 99999,
+    onUpdate: function() {
+      if (window.scrollY > 400) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }
+  });
+  btt.addEventListener('click', function() {
+    gsap.to(window, { scrollTo: 0, duration: 1, ease: 'power3.inOut' });
+  });
+
+  // ── Easter egg: Chicken crossing ──
+  function chickenCross() {
+    var chicken = document.getElementById('easterChicken');
+    chicken.style.opacity = '1';
+    chicken.style.left = '-50px';
+    gsap.to(chicken, {
+      left: window.innerWidth + 50 + 'px',
+      duration: 8,
+      ease: 'none',
+      onComplete: function() {
+        chicken.style.opacity = '0';
+        // Schedule next crossing
+        setTimeout(chickenCross, 60000 + Math.random() * 120000);
+      }
+    });
+  }
+  setTimeout(chickenCross, 15000 + Math.random() * 30000);
+
+  // ── Easter egg: Old delivery truck ──
+  function truckDrive() {
+    var truck = document.getElementById('easterTruck');
+    truck.style.opacity = '1';
+    truck.style.right = '-60px';
+    truck.style.left = 'auto';
+    gsap.to(truck, {
+      right: window.innerWidth + 60 + 'px',
+      duration: 10,
+      ease: 'none',
+      onComplete: function() {
+        truck.style.opacity = '0';
+        setTimeout(truckDrive, 90000 + Math.random() * 180000);
+      }
+    });
+  }
+  setTimeout(truckDrive, 45000 + Math.random() * 60000);
+
+  // ── Smooth scroll for nav links ──
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      var href = this.getAttribute('href');
+      if (href === '#') return;
+      var target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        gsap.to(window, { scrollTo: { y: target, offsetY: 72 }, duration: 1, ease: 'power3.inOut' });
+      }
+    });
+  });
+
+})();
+</script>
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "GroceryStore",
+  "name": "Lloyd's Silva Store",
+  "alternateName": "Silva's Grocery & Liquor",
+  "description": "Historic neighborhood grocery store serving Ewa Beach families across generations. Groceries, liquor, meat, ATM, lottery, bill pay, phone cards, and local products.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "91-455 Ewa Beach Road",
+    "addressLocality": "Ewa Beach",
+    "addressRegion": "HI",
+    "postalCode": "96706",
+    "addressCountry": "US"
+  },
+  "telephone": "(808) 689-7331",
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+      "opens": "06:00",
+      "closes": "22:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Sunday",
+      "opens": "07:00",
+      "closes": "21:00"
+    }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Store Products",
+    "itemListElement": [
+      {"@type": "Offer", "itemOffered": {"@type": "Product", "name": "Groceries"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Product", "name": "Beer, Wine & Spirits"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Product", "name": "Fresh Meat"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Product", "name": "Local Snacks"}}
+    ]
+  }
+}
+</script>
+
 </body>
-</html></p></h1>
-</body></title>
-  </head>
 </html>
